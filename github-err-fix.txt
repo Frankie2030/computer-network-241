@@ -1,0 +1,23 @@
+git add .
+git commit -m "comments"
+git push origin main
+
+git branch -a --> list the branches we have in local & remote
+git checkout -b <named branch>
+
+
+IF WHEN "git push origin main" RECEIVES ERROR: "Updates were rejected because the remote contains the work that you do not have locally", perform:
+git fetch origin 
+git merge origin/main 
+when above error, do this: git merge origin/main --allow-unrelated-histories 
+then do this: git push origin main 
+
+git reset --soft HEAD~1
+git reset --mixed HEAD~1
+
+When new large files are added:
+git lfs track "*.safetensors"
+git add .gitattributes
+git commit -m "Track large model files with Git LFS"
+
+Remove-Item -Recurse -Force .git

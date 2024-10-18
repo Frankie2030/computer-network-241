@@ -1,0 +1,159 @@
+The system is designed to support multiple clients downloading different files from a target client simultaneously, necessitating multithreading in the client code.
+
+The client incorporates a simple command-shell interpreter accepting two types of commands:
+
+- publish lname fname: Adds a local file (stored in the client's file system at lname) to the client's repository as a file named fname. This information is conveyed to the server.
+- fetch fname: Requests a copy of the target file, which is then added to the local repository.
+
+The server also features a command-shell interpreter with commands such as:
+
+- discover hostname: Discovers the list of local files on the host named hostname.
+- ping hostname: Performs a live check on the host named hostname.
+
+
+Server: chạy file indexServer trước
+
+Client: chạy file user trước
+
+● Server:
+
+➔ The Server only has 1 command which is “end”. “ping “ and “discover” already implemented as a server core (the server will automatically run these 2 command every 5 second to check connection continuously)
+
+➔ Type “end” to the command prompt to shut the server down
+
+
+● Client has 5 main functionality:
+
+➔ publish: to publish a file to server, type the file name in the input field and press Publish button
+
+➔ Stop publish: to stop publishment of a file, type in the file name in the input field and press Stop Publish button, publishment will be remove from both server and client side, use this in case you want to delete a file from the user_repo directory
+
+➔ Fetch: to fetch a file from another client via index server, type in the file name in the input field and press Fetch button. This file will be added to the user_repo directory
+
+➔ Stop : to shut the client down
+
+➔ Put file in repo: use this when you want to put a file in your computer into repository for later publishment, fetched file from another client will also appeared in the same directory
+
+➔ Other information shown in the UI are: User’s Hostname, IP address and repository directory
+
+➔ There is also a debug terminal to show debugging message Below is a screenshot of the client’s UI
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+***** Phần code *****
+
+
+
+Server:
+
+*** _handle_client_packet(self, client_socket): nhận request từ client
+
+This function handles every request sent from a client_socket to the server. Server should create a new thread to handle a newly connected client.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
