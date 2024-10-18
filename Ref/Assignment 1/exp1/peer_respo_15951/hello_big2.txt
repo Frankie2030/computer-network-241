@@ -1,0 +1,25 @@
+
+    def start_peer(self):
+        # Simulate action when transfer file button is clicked
+        self.peer=peer()
+        self.peer.start()
+        # Display message on GUI
+        message = f"a peer with IP address {self.peer.ip}, ID {self.peer.id} is created\n"
+        self.log_text.insert(tk.END, message)
+
+    def request(self):
+        # Simulate action when stop transfer button is clicked
+        message = "Requesting the file\n"
+        self.log_text.insert(tk.END, message)
+        self.show_popup()
+
+        
+    def show_popup(self):
+        self.log_text.insert(tk.END, "Enter something: ")
+        user_input = input();
+        self.log_text.insert(tk.END, user_input)
+        if user_input:
+            messagebox.showinfo("Result", f"You entered: {user_input}")
+        else:
+            messagebox.showwarning("Warning", "You didn't enter anything!")
+
