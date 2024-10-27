@@ -4,8 +4,6 @@ import ast
 
 import common
 
-
-
 class File:
     def __init__(self, path, metainfo = {}, pieces = []):
         self.meta_info = metainfo
@@ -109,9 +107,7 @@ class File:
             lines = f.readlines()
         with open(path, 'w') as f:
             f.writelines(lines[1:])
-        
-        
-        
+            
 class Piece:
     def __init__(self, data : bytes= b'', index = 0):
         self.index = index
@@ -124,24 +120,3 @@ class Piece:
 # for piece in test.pieces:
 #     print(piece.index)
 #     print(piece.data)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -133,16 +133,12 @@ class peer:
             except Exception as e:
                 print(f"a false in accepting connection from peer: {e}")
             
-            
             handle_specific_peer = threading.Thread(target=self.handle_specific_peer, args=(connect_socket, addr))
             handle_specific_peer.start()
             
         self.handle_peer_socket.close()
         print("stop listening for other peers...")
         
-        
-    
-    
     def handle_specific_peer(self, client_socket : socket.socket, client_addr):
         print(f"accept connection from peer {client_socket}")       
         
@@ -161,8 +157,6 @@ class peer:
             except Exception as e:
                 print(f"a false in parse message: {e}")
                 
-            
-            
             if message["type"] == mess_type.PEER_REQUEST.value:
                 target_file = None
                 target_name = list(message['file'])[0]
@@ -211,8 +205,7 @@ class peer:
                 break
             
             if not message:
-                continue
-            
+                continue  
             
             try:
                 message = self.parse_message(message)
@@ -269,8 +262,7 @@ class peer:
                 print(f"files available for downloading:")
                 for file in message['file']:
                     # print(file, message['file'][file])
-                    print(file)
-                        
+                    print(file)                 
     
     def get_download_file(self, target_file, meta_info):
         for file in self.file_in_dir:
@@ -289,12 +281,8 @@ class peer:
             target_file.piece_idx_not_downloaded.append(target_file.piece_idx_downloaded[-1])
         return target_file
     
-    
-    
     def download_from_peer_func(self, peer_download_socket : socket.socket, target_file):
-        
         while self.running:
-            
             try:
                 with self.lock:
                     if len(target_file.piece_idx_not_downloaded) == 0:
@@ -310,7 +298,6 @@ class peer:
             except Exception as e:
                 print(f"a false in sending require message to peer: {e}")
                 break
-            
             
             try:
                 message = peer_download_socket.recv(RECEIVE_SIZE).decode(CODE)
@@ -350,7 +337,6 @@ class peer:
         self.create_and_send_message(connect_socket, mess_type.CLOSE)
         connect_socket.close()
                              
-    
     # fucntion for button on GUI
     def request_and_download_file(self):
         target_file = input("Input the file you want to download: ")

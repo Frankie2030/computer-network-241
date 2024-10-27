@@ -28,7 +28,6 @@ class server:
         self.files = {}
         self.lock = threading.Lock()
         
-        
         # A socket for listening from every one in the network is created
         self.handle_client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.handle_client_socket.bind((self.ip, self.port))
@@ -68,7 +67,6 @@ class server:
             mess_struct['file'] = ast.literal_eval(mess_struct['file'])
             
         print(mess_struct)
-        
         return mess_struct
 
     # first version checked   
@@ -84,8 +82,7 @@ class server:
             except socket.timeout:
                 continue
             except Exception as e:
-                print(f"a false in accepting the peer connect request: {e}")
-            
+                print(f"a false in accepting the peer connect request: {e}")   
             
             # Create a thread for each client accessing the server
             handle_speci_client = threading.Thread(target=self.handle_specific_client, args=(client_socket, client_addr))
@@ -107,8 +104,6 @@ class server:
                         if index not in self.client_info[client_socket][file]:
                             self.client_info[client_socket][file].append(index)
                 
-                
-                
     def find_peer_have(self, target_file):
         peer_list = []
         for client in self.client_info:
@@ -117,13 +112,11 @@ class server:
                 peer_list.append({"ip": ip, "port": port+1, "indexes": self.client_info[client][target_file]})
         return peer_list    
             
-    def handle_specific_client(self, client_socket : socket.socket, client_addr):
-        
+    def handle_specific_client(self, client_socket : socket.socket, client_addr): 
         print(f"accept connection from the client {client_addr}")
         self.create_and_send_message(client_socket, mess_type.HANDSHAKE)
         
         while self.running: 
-            
             try:
                 message = client_socket.recv(RECEIVE_SIZE).decode(CODE)
             except Exception as e:
