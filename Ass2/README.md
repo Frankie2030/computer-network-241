@@ -1,3 +1,14 @@
+-- Version 3 --
+Done:
+- Main router, Aux1 router, aux2 router: NAT overload, ACL. IPSec VPN to Main <-> Aux1 and Main <-> Aux2.
+- Firewall: Setup Static route and OSPF routing; Created Object network, enable NAT; configure policy (ACL).
+
+Next step:
+- Change the design of the Internet (v4)
+
+
+-- Version 2 --
+
 Trong project 7 co cac configure step nhu sau:
 
 Config step:
