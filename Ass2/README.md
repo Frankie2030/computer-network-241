@@ -1,64 +1,76 @@
 # Version 4.5
-Cơ bản đã hoàn thành xong tất cả mọi thứ.
-Đây là danh sách cần demo:
-1. Inter-vlan routing: Sử dụng tính năng Simple PDU cho nhanh.
-	1.1. PC pings each other
-	1.2. PC pings to Smartphone and vice versa
-	1.3. PC pings to Webcam and vice versa
-2. Inter-site routing (between vlans): Sử dụng tính năng ping.
-	2.1. PC pings to server
-	2.2. Server pings to PC
-3. ACL on L3 switch: Camera - Server - PC system
-   Surveillance room: VLAN 60 (192.168.60.0/25)
-	3.1. PC and Server cannot access Vlan 60 and vice versaa
-   3.2. Webcam from each department can access Vlan 60 and vice versa.
-4. WAN routing and Site-to-site IPSec VPN
-	4.1. Demo PC pinging from main site to aux site 1 and vice versa; main site to aux site 2 and vice versa.
-	4.2. IPSec VPN:
-      4.2.1. From the main router, show crypto isakmp sa. State=QM_IDLE.
-      4.2.2. From the main router, show crypto ipsec sa, giải thích # packets encaps and # packets decaps. Demo khi sử dụng dịch vụ HTTP thì sẽ chỉ có # packets decaps.
-6. Servers
-	5.1. DHCP server provides IP addresses to departments. IP addresses of servers and webcams are static.
-	5.3. Web server and DNS server:
-		+ Main site: ccc-hospital.main.in
-		+ Aux site 1: ccc-hospital.aux1.in
-		+ Aux site 2: ccc-hospital.aux2.in
-		+ Public: ccc-hospital.com
-		Note: Devices from main site can connect to servers on aux site 1 and 2.
-7. Services
-   Used: DMZ, DNS server, Web server, File server, Email server, NAT overload.
-	6.1. External DNS server and web server for customers. Customers should access the hospital’s official website.
-      6.1.1. show ip nat trans
-	6.2. Email server (192.168.250.4).
-		6.2.1. Create usernames and passwords in Email Server. Configure Mail in client's PC.
-		6.2.2. Demo sending emails and receiving emails.
-		6.2.3. Demo rejecting unauthorized users (SMTP authentication failed) since the email server cannot recognize the user.
-		6.2.4. Demo sending emails to unregistered/unauthorized users (Send Successful but a Send Notification Failure is automatically sent)
-      6.2.5. show ip nat trans
-	6.3. File server (can only work with built-in files)
-		6.3.1. Create user account in File server. Then authenticate user in client's PC (command: ftp 192.168.250.3)
-		6.3.2. Download a file from the File server (get <file_name>). To list all files from File Server, use command 'dir' within ftp.
-      6.3.3. Create a txt file from text editor.
-      6.3.4. Put the file into the File server (put <file_name>).
-      6.3.5. Verify the new file in the File server.
-      6.3.6. Log in as another user, verify the new file from the File server. Download it.
-      6.3.7. show ip nat trans
-8. Verify and disqualify connection between internal and external network.
-   Used: DMZ, Firewall; NAT overload
-	7.1. INSIDE to DMZ (ccc-hospital.com); INSIDE to OUTSIDE1/2 (google.com)
-	7.2. DMZ to OUTSIDE1/2
-	7.3. OUTSIDE1/2 to DMZ, chỉ cho phép sử dụng dịch vụ HTTP và DNS của 192.168.250.2 (ccc-hospital.com)
-   7.4. DMZ to INSIDE, chỉ cho phép ping và tracert tới DNS-Web server 200.0.0.2 của Main site.
-	7.5. show ip nat trans ở main router. Project này dùng NAT overload. Giải thích ý nghĩa của inside local, inside global, outside global/local.
-9. Client-to-site VPN (Remote access VPN)
-   8.1. Create a VPN client. usergroup=remoteccc, userkey=vpnremote, hostserver = 192.168.11.2, username=admin, password=admin
-   8.2. ipconfig /all
-   8.3. From the main site router, ping to 192.180.0.x (x is the IP address the VPN gets from the VPNCLIENT pool: 192.180.0.0 -> 192.180.0.50)
-   8.4. From the remote PC, ping to the main site router (192.168.11.2); tracert to Vlan 10, Vlan 60 (Surveillance - Fail), Vlan 200.
-   8.5. From the main site router, verify VPN connection:
-      8.5.1. sh crypto isakmp sa. State=QM_IDLE
-      8.5.2. sh crypto ipsec sa. Verify 'crypto map staticmap'
-   
+
+**Cơ bản đã hoàn thành xong tất cả mọi thứ. Dưới đây là danh sách cần demo:**
+
+## 1. Inter-VLAN Routing
+- Sử dụng tính năng Simple PDU để kiểm tra nhanh.
+  - **1.1**: PC pings each other.
+  - **1.2**: PC pings Smartphone và ngược lại.
+  - **1.3**: PC pings Webcam và ngược lại.
+
+## 2. Inter-Site Routing (Between VLANs)
+- Sử dụng tính năng ping.
+  - **2.1**: PC pings to server.
+  - **2.2**: Server pings to PC.
+
+## 3. ACL on L3 Switch: Camera - Server - PC System
+- Surveillance room: VLAN 60 (192.168.60.0/25).
+  - **3.1**: PC và Server không thể truy cập VLAN 60 và ngược lại.
+  - **3.2**: Webcam từ mỗi department có thể truy cập VLAN 60 và ngược lại.
+
+## 4. WAN Routing and Site-to-Site IPSec VPN
+- **4.1**: Demo PC pinging từ main site đến aux site 1 và 2, và ngược lại.
+- **4.2**: IPSec VPN:
+  - **4.2.1**: Từ main router, `show crypto isakmp sa`. State=QM_IDLE.
+  - **4.2.2**: Từ main router, `show crypto ipsec sa`, giải thích số packets encaps và decaps. Demo khi sử dụng dịch vụ HTTP thì chỉ có số packets decaps.
+
+## 5. Servers
+- **5.1**: DHCP server cung cấp IP cho các department. IP của servers và webcams là static.
+- **5.2**: Web server và DNS server:
+  - Main site: `ccc-hospital.main.in`.
+  - Aux site 1: `ccc-hospital.aux1.in`.
+  - Aux site 2: `ccc-hospital.aux2.in`.
+  - Public: `ccc-hospital.com`.
+  - **Note**: Các thiết bị từ main site có thể kết nối đến servers trên aux site 1 và 2.
+
+## 6. Services
+- **Sử dụng**: DMZ, DNS server, Web server, File server, Email server, NAT overload.
+  - **6.1**: External DNS và Web server cho khách hàng. Khách hàng truy cập website chính thức của bệnh viện.
+    - **6.1.1**: `show ip nat trans`.
+  - **6.2**: Email server (192.168.250.4).
+    - **6.2.1**: Tạo usernames và passwords trong Email Server. Cấu hình Mail trên PC client.
+    - **6.2.2**: Demo gửi và nhận email.
+    - **6.2.3**: Demo từ chối user không hợp lệ (SMTP authentication failed).
+    - **6.2.4**: Demo gửi email đến user không đăng ký (Send Successful nhưng có Send Notification Failure).
+    - **6.2.5**: `show ip nat trans`.
+  - **6.3**: File server (chỉ làm việc với file có sẵn).
+    - **6.3.1**: Tạo tài khoản trên File server. Xác thực từ PC client (`ftp 192.168.250.3`).
+    - **6.3.2**: Download file từ File server (`get <file_name>`).
+    - **6.3.3**: Tạo file txt từ text editor.
+    - **6.3.4**: Upload file lên File server (`put <file_name>`).
+    - **6.3.5**: Kiểm tra file mới trên File server.
+    - **6.3.6**: Đăng nhập bằng user khác và kiểm tra file mới. Download file đó.
+    - **6.3.7**: `show ip nat trans`.
+
+## 7. Verify and Disqualify Connection Between Internal and External Network
+- **Sử dụng**: DMZ, Firewall, NAT overload.
+  - **7.1**: INSIDE to DMZ (`ccc-hospital.com`); INSIDE to OUTSIDE1/2 (`google.com`).
+  - **7.2**: DMZ to OUTSIDE1/2.
+  - **7.3**: OUTSIDE1/2 to DMZ, chỉ cho phép HTTP và DNS từ 192.168.250.2 (`ccc-hospital.com`).
+  - **7.4**: DMZ to INSIDE, chỉ cho phép ping và tracert đến DNS-Web server 200.0.0.2 của Main site.
+  - **7.5**: `show ip nat trans` ở main router (sử dụng NAT overload). Giải thích inside local, inside global, outside global/local.
+
+## 8. Client-to-Site VPN (Remote Access VPN)
+- **8.1**: Tạo VPN client: `usergroup=remoteccc`, `userkey=vpnremote`, `hostserver=192.168.11.2`, `username=admin`, `password=admin`.
+- **8.2**: `ipconfig /all`.
+- **8.3**: Từ main site router, ping đến `192.180.0.x` (IP từ VPNCLIENT pool: `192.180.0.0 -> 192.180.0.50`).
+- **8.4**: Từ remote PC, ping đến main site router (`192.168.11.2`); tracert đến VLAN 10, VLAN 60 (Surveillance - Fail), VLAN 200.
+- **8.5**: Từ main site router, xác minh kết nối VPN:
+  - **8.5.1**: `show crypto isakmp sa`. State=QM_IDLE.
+  - **8.5.2**: `show crypto ipsec sa`. Kiểm tra `crypto map staticmap`.
+
+
+
 
 
 
