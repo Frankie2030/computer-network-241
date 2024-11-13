@@ -59,6 +59,7 @@
   - **7.3**: OUTSIDE1/2 to DMZ, chỉ cho phép HTTP và DNS từ 192.168.250.2 (`ccc-hospital.com`).
   - **7.4**: DMZ to INSIDE, chỉ cho phép ping và tracert đến DNS-Web server 200.0.0.2 của Main site.
   - **7.5**: `show ip nat trans` ở main router (sử dụng NAT overload). Giải thích inside local, inside global, outside global/local.
+  - **7.6** `show acc`, take note of `hitcnt`
 
 ## 8. Client-to-Site VPN (Remote Access VPN)
 - **8.1**: Tạo VPN client: `usergroup=remoteccc`, `userkey=vpnremote`, `hostserver=192.168.11.2`, `username=admin`, `password=admin`.
